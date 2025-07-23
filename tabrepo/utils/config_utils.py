@@ -109,18 +109,15 @@ class AGConfigGenerator(AbstractConfigGenerator):
         configs = combine_manual_and_random_configs(manual_configs=self.manual_configs, random_configs=random_configs, name_id_suffix=name_id_suffix)
         return configs
 
-<<<<<<< HEAD
-    def generate_all_bag_experiments(self, num_random_configs: int, name_id_suffix: str = "", 
-                                     add_seed: Literal["static", "fold-wise", "fold-config-wise"] = "static", 
-                                     reuse_tabarena: bool = False,
-                                     preprocessor_name: str = 'default') -> list:
-=======
+
     def generate_all_bag_experiments(
         self,
         num_random_configs: int,
         name_id_suffix: str = "",
         add_seed: Literal["static", "fold-wise", "fold-config-wise"] = "static",
         method_kwargs: dict | None = None,
+        reuse_tabarena: bool = False,
+        preprocessor_name: str = 'default'
     ) -> list:
         """Generate experiments with bagging models for the search space.
 
@@ -141,17 +138,13 @@ class AGConfigGenerator(AbstractConfigGenerator):
             function. For example, you can modify the init kwargs of TabularPredictor
             runner by `method_kwargs=dict(init_kwargs=dict(path="./my_custom_path"))`
         """
-        configs = self.generate_all_configs_lst(num_random_configs=num_random_configs, name_id_suffix=name_id_suffix)
-        experiments = generate_bag_experiments(model_cls=self.model_cls, configs=configs, name_suffix_from_ag_args=True, add_seed=add_seed, method_kwargs=method_kwargs)
-        return experiments
->>>>>>> 10a5322 (add: support for modify init kwargs in experiments and docstring (#198))
-
         if reuse_tabarena:
             configs = get_tabarena_model_configs(model_name=self.model_cls.ag_name, n_trials=num_random_configs)
         else:
             configs = self.generate_all_configs_lst(num_random_configs=num_random_configs, name_id_suffix=name_id_suffix)
 
-        experiments = generate_bag_experiments(model_cls=self.model_cls, configs=configs, name_suffix_from_ag_args=True, add_seed=add_seed, preprocessor_name=preprocessor_name)
+        experiments = generate_bag_experiments(model_cls=self.model_cls, configs=configs, name_suffix_from_ag_args=True, add_seed=add_seed, method_kwargs=method_kwargs, preprocessor_name=preprocessor_name)
+
         return experiments
 
 class ConfigGenerator(AGConfigGenerator):
