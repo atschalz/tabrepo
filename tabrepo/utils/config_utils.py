@@ -187,6 +187,7 @@ def generate_bag_experiments(
     add_name_suffix_to_params: bool = True,
     preprocessor_name: str = 'default',
     add_seed: Literal["static", "fold-wise", "fold-config-wise"] = "static",
+    preprocessor_name: str = 'default',
     **kwargs,
 ) -> list[AGModelBagExperiment]:
     experiments = []
