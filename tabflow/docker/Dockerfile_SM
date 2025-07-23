@@ -2,6 +2,7 @@
 
 # We do not use AG DLC as we may need to benchmark against any specific version of AG
 # This saves space when pulling a smaller sized image
+<<<<<<< HEAD
 
 # Select either the CPU or GPU Image depending on if you are running GPU experiments or not.
 # While CPU experiments can be ran on the GPU Image, it will be more cumbersome due to the much larger image size.
@@ -30,6 +31,9 @@ LABEL build.device="${DEVICE}"
 #############################
 # 4. Install Dependencies
 #############################
+=======
+FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:2.5.1-gpu-py311-cu124-ubuntu22.04-sagemaker
+>>>>>>> 56da681 (Adapt docker script)
 
 # Source install Autogluon mainline or any branch that the user wants to benchmark against
 # User can also source install tabrepo or any other libraries, if required
@@ -52,11 +56,28 @@ RUN set -ex && \
 # Delete the below line if you clone the tabrepo repo and source install it in the Dockerfile
 COPY tabrepo/ tabrepo/
 
+# Create weights directory and copy local weights to workspace
+# RUN mkdir -p workspace/weights
+# COPY weights/* workspace/weights/
+
 # Install the required packages
 RUN pip install -e ./tabrepo/[benchmark] && \
     pip install -e ./tabrepo/tabflow/
 
+<<<<<<< HEAD
 RUN rm -rf /root/.cache/pip
+=======
+# Install pytabkit and seaborn for RealMLP models
+# User can add any more dependencies here
+RUN pip install pytabkit seaborn
+RUN pip install "interpret-core>=0.6.1" \
+    && pip install "tabpfn>=2" \
+    && pip install "tabicl>=0.1.1" \
+    && pip install loguru \
+    && pip install einx \
+    && pip install ninja
+    # && pip install "flash-attn==2.6.3" --no-build-isolation
+>>>>>>> 56da681 (Adapt docker script)
 
 # GPU images can come pre-installed with flash-attn, uncomment this to ensure it isn't installed
 # RUN pip uninstall flash-attn -y
