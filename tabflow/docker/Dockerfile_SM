@@ -2,38 +2,7 @@
 
 # We do not use AG DLC as we may need to benchmark against any specific version of AG
 # This saves space when pulling a smaller sized image
-<<<<<<< HEAD
-
-# Select either the CPU or GPU Image depending on if you are running GPU experiments or not.
-# While CPU experiments can be ran on the GPU Image, it will be more cumbersome due to the much larger image size.
-
-#############################
-# 1. Choose target (cpu or gpu)
-#############################
-ARG DEVICE=cpu
-
-#############################
-# 2. Define both stages
-#############################
-# --- CPU (small, no CUDA) ---
-FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:2.5.1-cpu-py311-ubuntu22.04-sagemaker AS cpu
-
-# --- GPU (large, CUDA 12.4) ---
-FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:2.5.1-gpu-py311-cu124-ubuntu22.04-sagemaker AS gpu
-
-#############################
-# 3. Pick the one we want
-#############################
-# expands to stage “cpu” or “gpu”
-FROM ${DEVICE} AS base
-LABEL build.device="${DEVICE}"
-
-#############################
-# 4. Install Dependencies
-#############################
-=======
 FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:2.5.1-gpu-py311-cu124-ubuntu22.04-sagemaker
->>>>>>> 56da681 (Adapt docker script)
 
 # Source install Autogluon mainline or any branch that the user wants to benchmark against
 # User can also source install tabrepo or any other libraries, if required
@@ -64,9 +33,6 @@ COPY tabrepo/ tabrepo/
 RUN pip install -e ./tabrepo/[benchmark] && \
     pip install -e ./tabrepo/tabflow/
 
-<<<<<<< HEAD
-RUN rm -rf /root/.cache/pip
-=======
 # Install pytabkit and seaborn for RealMLP models
 # User can add any more dependencies here
 RUN pip install pytabkit seaborn
@@ -77,7 +43,6 @@ RUN pip install "interpret-core>=0.6.1" \
     && pip install einx \
     && pip install ninja
     # && pip install "flash-attn==2.6.3" --no-build-isolation
->>>>>>> 56da681 (Adapt docker script)
 
 # GPU images can come pre-installed with flash-attn, uncomment this to ensure it isn't installed
 # RUN pip uninstall flash-attn -y
