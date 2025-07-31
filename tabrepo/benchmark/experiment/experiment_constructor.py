@@ -330,9 +330,12 @@ class AGModelExperiment(Experiment):
         if "fit_kwargs" not in method_kwargs:
             method_kwargs["fit_kwargs"] = {}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> 4d07fea (Save all changes)
+=======
+>>>>>>> 4676766 (Fix minor bug for running experiments with fit_args (#190))
         assert "raise_on_model_failure" not in method_kwargs["fit_kwargs"], \
             f"Set `raise_on_model_failure` directly in {self.__class__.__name__} rather than in `fit_kwargs`"
         method_kwargs["fit_kwargs"]["raise_on_model_failure"] = raise_on_model_failure
@@ -434,9 +437,12 @@ class AGModelBagExperiment(AGModelExperiment):
             method_kwargs = {}
         method_kwargs = copy.deepcopy(method_kwargs)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         
 >>>>>>> 4d07fea (Save all changes)
+=======
+>>>>>>> 4676766 (Fix minor bug for running experiments with fit_args (#190))
         assert isinstance(num_bag_folds, int)
         assert isinstance(num_bag_sets, int)
         assert isinstance(method_kwargs, dict)
