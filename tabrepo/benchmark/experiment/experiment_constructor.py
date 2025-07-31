@@ -430,7 +430,6 @@ class AGModelBagExperiment(AGModelExperiment):
         if method_kwargs is None:
             method_kwargs = {}
         method_kwargs = copy.deepcopy(method_kwargs)
-        
         assert isinstance(num_bag_folds, int)
         assert isinstance(num_bag_sets, int)
         assert isinstance(method_kwargs, dict)
