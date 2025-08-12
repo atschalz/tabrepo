@@ -76,9 +76,7 @@ class RealMLPModel(AbstractModel):
             model_cls = RealMLP_TD_S_Regressor
         return model_cls
 
-    def _get_random_seed_from_hyperparameters(
-        self, hyperparameters: dict
-    ) -> int | None | str:
+    def _get_random_seed_from_hyperparameters(self, hyperparameters: dict) -> int | None | str:
         return hyperparameters.get("random_state", "N/A")
 
     def _fit(
@@ -278,7 +276,7 @@ class RealMLPModel(AbstractModel):
         return X
 
     def _set_default_params(self):
-        default_params = {
+        default_params = dict(
             # Don't use early stopping by default, seems to work well without
             "use_early_stopping": False,
             "early_stopping_additive_patience": 40,

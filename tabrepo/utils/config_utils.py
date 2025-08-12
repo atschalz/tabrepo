@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 from typing import Type, Literal
+from typing import Type, Literal
 
 from autogluon.core.searcher.local_random_searcher import LocalRandomSearcher
 from autogluon.core.models import AbstractModel
