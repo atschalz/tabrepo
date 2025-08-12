@@ -20,7 +20,11 @@ class EbmCallback:
         self.seconds = seconds
         self.end_time: int | None = None
 
+<<<<<<< HEAD
     def __call__(self, *args, **kwargs):
+=======
+    def __call__(self, **kwargs):
+>>>>>>> 2155d4f (Update EBM method and hyperparameters (#158))
         if self.end_time is None:
             self.end_time = time.monotonic() + self.seconds
             return False
