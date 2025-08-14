@@ -329,7 +329,10 @@ class AGModelExperiment(Experiment):
             model_hyperparameters = self._insert_time_limit(model_hyperparameters=model_hyperparameters, time_limit=time_limit, method_kwargs=method_kwargs)
         if "fit_kwargs" not in method_kwargs:
             method_kwargs["fit_kwargs"] = {}
+<<<<<<< HEAD
+=======
 
+>>>>>>> 4d07fea (Save all changes)
         assert "raise_on_model_failure" not in method_kwargs["fit_kwargs"], \
             f"Set `raise_on_model_failure` directly in {self.__class__.__name__} rather than in `fit_kwargs`"
         method_kwargs["fit_kwargs"]["raise_on_model_failure"] = raise_on_model_failure
@@ -430,6 +433,10 @@ class AGModelBagExperiment(AGModelExperiment):
         if method_kwargs is None:
             method_kwargs = {}
         method_kwargs = copy.deepcopy(method_kwargs)
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 4d07fea (Save all changes)
         assert isinstance(num_bag_folds, int)
         assert isinstance(num_bag_sets, int)
         assert isinstance(method_kwargs, dict)

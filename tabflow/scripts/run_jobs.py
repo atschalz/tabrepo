@@ -95,15 +95,15 @@ if __name__ == "__main__":
     task_metadata = load_task_metadata()
     task_metadata = load_task_metadata()
 
-    experiment_name = "test2"
-    max_concurrent_jobs = 1000
-    batch_size = 8
+    experiment_name = "all_in_one"
+    max_concurrent_jobs = 5000
+    batch_size = 20
     wait = True
     s3_bucket = "prateek-ag"
     region_name = "us-west-2"
     instance_type = "ml.m6i.2xlarge" #"ml.g6.2xlarge" 
 
-    methods_file = "configs_all.yaml"  # TODO: Need to create this file
+    methods_file = f"configs_all_{experiment_name}.yaml"  # TODO: Need to create this file
     methods = JobManager.load_methods_from_yaml(methods_file=methods_file)
 
     datasets = list(task_metadata["name"])
@@ -111,10 +111,10 @@ if __name__ == "__main__":
     # raise AssertionError("No datasets found")
 
     # toy run
-    datasets = datasets[:1]
+    datasets = ['hiva_agnostic', 'Bioresponse', 'kddcup09_appetency', 'MIC','Diabetes130US', 'anneal']
     folds = list(range(3))
     repeats = list(range(1))
-    methods = methods[:2]
+    methods = methods[:100]
 
     print(datasets)
     print()
