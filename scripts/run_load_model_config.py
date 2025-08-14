@@ -43,7 +43,7 @@ def get_config_generator(model_name):
 
 
 if __name__ == '__main__':
-    use_models = ['LightGBM']
+    use_models = ['CatBoost']
     n_random_configs = 200
     n_random_configs_baselines = 50
     include_dummy = False

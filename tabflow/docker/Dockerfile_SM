@@ -59,9 +59,7 @@ RUN pip install -e workspace/tabrepo/[benchmark] \
 #     && pip install ConfigSpace \
 #     && pip install category_encoders
     # && pip install "flash-attn==2.6.3" --no-build-isolation
-
-# GPU images can come pre-installed with flash-attn, uncomment this to ensure it isn't installed
-# RUN pip uninstall flash-attn -y
+RUN pip install ConfigSpace 
 
 # Generate tabrepo configs and give permissions
 # RUN chmod +x ./tabrepo/scripts/run_generate_all_configs.py
