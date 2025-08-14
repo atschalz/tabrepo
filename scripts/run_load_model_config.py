@@ -83,4 +83,8 @@ if __name__ == '__main__':
     from tabrepo.models.automl import generate_autogluon_experiments
     experiments_autogluon = generate_autogluon_experiments()
 
+<<<<<<< HEAD
     YamlExperimentSerializer.to_yaml(experiments=experiments_autogluon, path=f"configs_autogluon_{config_suffix}.yaml")
+=======
+    YamlExperimentSerializer.to_yaml(experiments=experiments_autogluon, path=f"configs_autogluon_{config_suffix}.yaml")
+>>>>>>> 97d62b3 (Save all changes)
