@@ -43,12 +43,12 @@ def get_config_generator(model_name):
 
 
 if __name__ == '__main__':
-    use_models = ['CatBoost']
+    use_models = ['LightGBM']
     n_random_configs = 200
     n_random_configs_baselines = 50
     include_dummy = False
     preprocessor_name = 'all_in_one'
-    config_suffix = 'cb_default'
+    config_suffix = 'all_in_one'
     time_limit = 7200
 
     # Dummy (constant predictor)

@@ -37,19 +37,19 @@ class AbstractExecModel:
     def transform_y(self, X: pd.DataFrame, y: pd.Series) -> pd.Series:
         y_out = y.copy()
         y_out = self.label_cleaner.transform(y_out)
-        if hasattr(self._feature_generator, 'linear_residuals'):
-            if self._feature_generator.linear_residuals:
-                y_out = self._feature_generator.transform_pre_fit(X, y_out)
+        if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
+            y_out = self._feature_generator.transform_pre_fit(X, y_out)
 
         return y_out
 
     def inverse_transform_y(self, X: pd.DataFrame, y: pd.Series, lin_residuals: pd.Series = None, X_str: pd.Series = None) -> pd.Series:
         y_out = y.copy()
         # y_out = self.label_cleaner.transform(y_out)
-        if hasattr(self._feature_generator, 'linear_residuals') or hasattr(self._feature_generator, 'postprocess_duplicates'):
-            if self._feature_generator.linear_residuals or self._feature_generator.postprocess_duplicates:
-                y_out = self._feature_generator.transform_post_predict(X, y_out, lin_residuals=lin_residuals, X_str=X_str)
-
+        if (hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model')):
+            y_out = self._feature_generator.transform_post_predict(X, y_out, lin_residuals=lin_residuals, X_str=X_str)
+        if hasattr(self._feature_generator, 'postprocess_duplicates') and self._feature_generator.postprocess_duplicates:
+            y_out = self._feature_generator.transform_post_predict(X, y_out, lin_residuals=lin_residuals, X_str=X_str)
+        
         return y_out
         # return self.label_cleaner.inverse_transform(y)
 
@@ -151,13 +151,12 @@ class AbstractExecModel:
         if self.preprocess_data:
             self._feature_generator = self.get_preprocessor()
             X_out = self._feature_generator.fit_transform(X, y_out)
-            if hasattr(self._feature_generator, 'linear_residuals'):
-                if self._feature_generator.linear_residuals:
-                    y_out = self._feature_generator.transform_pre_fit(X, y_out)
-                    self.orig_problem_type = self.problem_type
-                    self.problem_type = 'regression'
-                    self.eval_metric_orig = self.eval_metric
-                    self.eval_metric = root_mean_squared_error
+            if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
+                y_out = self._feature_generator.transform_pre_fit(X, y_out)
+                self.orig_problem_type = self.problem_type
+                self.problem_type = 'regression'
+                self.eval_metric_orig = self.eval_metric
+                self.eval_metric = root_mean_squared_error
         
         return X_out, y_out
 
@@ -176,10 +175,10 @@ class AbstractExecModel:
         pass
 
     def back_to_orig_target(self):
-        if hasattr(self._feature_generator, 'linear_residuals'):
-            if self._feature_generator.linear_residuals:
-                self.problem_type = self.orig_problem_type
-                self.eval_metric = self.eval_metric_orig
+        if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
+
+            self.problem_type = self.orig_problem_type
+            self.eval_metric = self.eval_metric_orig
         else:
             pass
         
@@ -214,9 +213,9 @@ class AbstractExecModel:
                 y_pred = self.predict(X_test)
             y_pred_proba = None
         
-        if hasattr(self._feature_generator, 'linear_residuals'):
+        if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
             self.back_to_orig_target()
-            if self._feature_generator.linear_residuals and self.problem_type == 'binary':
+            if self.problem_type == 'binary':
                 y_pred_proba = y_pred
 
         out = {
@@ -226,7 +225,7 @@ class AbstractExecModel:
             'time_infer_s': timer_predict.duration,
         }
 
-        if hasattr(self._feature_generator, 'linear_residuals') and self._feature_generator.linear_residuals:
+        if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
             out['lin_res'] = self._feature_generator.detector.linear_residual_model.predict(X)
             out['lin_res'] = pd.Series(out['lin_res'], index=X.index)
 
@@ -255,7 +254,7 @@ class AbstractExecModel:
             return np.argmax(y_pred_proba, axis=1)
 
     def predict(self, X: pd.DataFrame) -> pd.Series:
-        if hasattr(self._feature_generator, 'linear_residuals') and self._feature_generator.linear_residuals:
+        if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
             lin_res = self._feature_generator.detector.linear_residual_model.predict(X)
         else: 
             lin_res = None
@@ -276,7 +275,7 @@ class AbstractExecModel:
         raise NotImplementedError
 
     def predict_proba(self, X: pd.DataFrame) -> pd.DataFrame:
-        if hasattr(self._feature_generator, 'linear_residuals') and self._feature_generator.linear_residuals:
+        if hasattr(self._feature_generator, 'detector') and hasattr(self._feature_generator.detector, 'linear_residual_model'):
             lin_res = self._feature_generator.detector.linear_residual_model.predict(X)
         else: 
             lin_res = None

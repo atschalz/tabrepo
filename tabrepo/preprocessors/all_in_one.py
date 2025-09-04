@@ -20,10 +20,9 @@ class AllInOneAutoMLPipelineFeatureGenerator(AutoMLPipelineFeatureGenerator):
         self.detector = AllInOneEngineer(        
                 target_type=target_type,
                 # engineering_techniques=['drop_irrelevant', 'cat_freq', 'cat_int']
-                engineering_techniques=['cat_as_num', 'cat_freq', 'cat_int', 'cat_groupby', 'num_int', 'groupby', 'duplicate_mapping', 'linear_residuals'],
-                # engineering_techniques=['duplicate_mapping'],
+                # engineering_techniques=['cat_as_num', 'cat_freq', 'cat_int', 'cat_groupby', 'num_int', 'groupby', 'duplicate_mapping'] #, 'linear_residuals'],
+                # engineering_techniques=['linear_residuals'],
             )
-        self.linear_residuals = False
     # def _fit_transform_custom(self, X_out: DataFrame, type_group_map_special: dict, y=None):
     #     self.interaction_detector.fit(X_out, y)
     #     X_out = self.interaction_detector.transform(X_out)
@@ -33,9 +32,6 @@ class AllInOneAutoMLPipelineFeatureGenerator(AutoMLPipelineFeatureGenerator):
         self.detector.fit(X, y)
         # if self.detector.postprocess_duplicates:
         #     self.postprocess = True
-
-        if self.detector.linear_residuals is not None:
-            self.linear_residuals = True
 
         if self.detector.post_predict_duplicate_mapping:
             self.postprocess_duplicates = True
@@ -55,7 +51,7 @@ class AllInOneAutoMLPipelineFeatureGenerator(AutoMLPipelineFeatureGenerator):
     def transform_pre_fit(self, X: DataFrame, y: Series, **kwargs) -> Series:
         # if self.detector.postprocess_duplicates:
         #     y_pred_adapted = self.detector.post_predict_transform(X, y_pred)
-        if self.linear_residuals:
+        if  hasattr(self.detector, 'linear_residual_model'):
             lin_pred = self.detector.linear_residual_model.predict(X)
             if self.target_type == 'binary' and y.dtype in ['category', 'object']:
                 self.my_positive_class = pd.Series(lin_pred, index=y.index).groupby(y.astype(str)).mean().idxmax()
@@ -71,7 +67,7 @@ class AllInOneAutoMLPipelineFeatureGenerator(AutoMLPipelineFeatureGenerator):
         # if self.detector.postprocess_duplicates:
         #     y_pred_adapted = self.detector.post_predict_transform(X, y_pred)
         y_pred_adapted = y_pred.copy()
-        if self.linear_residuals:
+        if hasattr(self.detector, 'linear_residual_model'):
             if self.target_type == 'binary':
                 # y_pred_adapted = y_pred 
                 # y_pred_adapted.iloc[:,1] = (y_pred_adapted.iloc[:,1] + self.detector.linear_residual_model.predict(X)).clip(0.0001,0.9999)
