@@ -157,7 +157,9 @@ class AbstractExecModel:
                 self.problem_type = 'regression'
                 self.eval_metric_orig = self.eval_metric
                 self.eval_metric = root_mean_squared_error
-        
+        else:
+            X_out = X.copy()
+
         return X_out, y_out
 
     # def pre_fit(self, X: pd.DataFrame, y: pd.Series):

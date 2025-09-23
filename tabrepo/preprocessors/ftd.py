@@ -4,7 +4,7 @@ from autogluon.common.features.feature_metadata import FeatureMetadata
 from pandas import DataFrame
 import sys
 sys.path.append('/home/ubuntu/cat_detection')
-from tabprep.ft_detection import FeatureTypeDetector
+from tabprep.detectors.ft_detection import FeatureTypeDetector
 from autogluon.features.generators import CategoryFeatureGenerator
 
 class FTDAutoMLPipelineFeatureGenerator(AutoMLPipelineFeatureGenerator):
