@@ -8,6 +8,8 @@ from ._download import download_zs_metadata
 
 
 class Paths:
+    os.environ["TABREPO_CACHE"] = '/ceph/atschalz/tabarena_cache'
+    os.environ["TABARENA_CACHE"] = '/ceph/atschalz/tabarena_cache'
     project_root: Path = Path(__file__).parent.parent.parent
     data_root: Path = project_root / 'data'
 
