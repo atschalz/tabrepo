@@ -68,6 +68,7 @@ methods_ag_key_map = {
     "ExplainableBM": "EBM",
     "ExtraTrees": "XT",
     "KNeighbors": "KNN",
+    "KNeighbors_new": "KNN_new",
     "LightGBM": "GBM",
     "LinearModel": "LR",
     "ModernNCA": "MNCA",
